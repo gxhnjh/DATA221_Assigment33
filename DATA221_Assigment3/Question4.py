@@ -3,17 +3,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 
-# ---------------- Load data ----------------
+#Load data
 kidney_data = pd.read_csv("kidney_disease.csv")
 kidney_data.columns = kidney_data.columns.str.strip()
 
 label_column = "classification"
 
-# ---------------- Split into X and y ----------------
+#Split into X and y
 raw_features = kidney_data.drop(columns=[label_column])
 label_vector = kidney_data[label_column]
 
-# ---------------- Handle missing values ----------------
+#Handle missing values
 # Fill numeric columns with median
 numeric_columns = raw_features.select_dtypes(include=["number"]).columns
 raw_features[numeric_columns] = raw_features[numeric_columns].fillna(raw_features[numeric_columns].median())
@@ -24,11 +24,11 @@ for col in categorical_columns:
     most_common_value = raw_features[col].mode(dropna=True)[0]
     raw_features[col] = raw_features[col].fillna(most_common_value)
 
-# ---------------- Convert categorical features to numeric ----------------
-# One-hot encode categorical columns (e.g., "normal", "abnormal", etc.)
+#Convert categorical features to numeric
+# One-hot encode categorical columns
 feature_matrix = pd.get_dummies(raw_features, drop_first=True)
 
-# ---------------- Train/test split ----------------
+#Train/test split
 X_train, X_test, y_train, y_test = train_test_split(
     feature_matrix,
     label_vector,
@@ -36,14 +36,14 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# ---------------- Train KNN (k = 5) ----------------
+#Train KNN (k=5)
 knn_model = KNeighborsClassifier(n_neighbors=5)
 knn_model.fit(X_train, y_train)
 
-# ---------------- Predict ----------------
+#Our prediction
 predicted_labels = knn_model.predict(X_test)
 
-# ---------------- Confusion matrix + metrics ----------------
+#Confusion matrix + metrics
 conf_matrix = confusion_matrix(y_test, predicted_labels)
 
 accuracy = accuracy_score(y_test, predicted_labels)
@@ -59,10 +59,10 @@ print("Precision:", precision)
 print("Recall:", recall)
 print("F1-score:", f1)
 
-# ---- Written explanations (5–7 sentences total) ----
-# True Positive (TP): the model predicts "ckd" and the patient truly has kidney disease.
-# True Negative (TN): the model predicts "notckd" and the patient truly does not have kidney disease.
-# False Positive (FP): the model predicts "ckd" but the patient is actually healthy (unnecessary extra tests).
-# False Negative (FN): the model predicts "notckd" but the patient actually has kidney disease (missed case).
-# Accuracy alone may not be enough because a model can look good if one class is more common than the other.
+#Written explanations
+# True Positive: the model predicts "ckd" and the patient truly has kidney disease.
+# True Negative: the model predicts "notckd" and the patient truly does not have kidney disease.
+# False Positive: the model predicts "ckd" but the patient is actually healthy (unnecessary extra tests).
+# False Negative: the model predicts "notckd" but the patient actually has kidney disease (missed case).
+#Accuracy alone may not be enough because a model can look good if one class is more common than the other.
 # If missing a kidney disease case is very serious, recall is most important because it focuses on catching as many real "ckd" cases as possible (reducing false negatives).

@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 
-# ---------------- Load + prepare data (same as Q4) ----------------
+#Load and prepare data (same as Q4)
 kidney_data = pd.read_csv("kidney_disease.csv")
 kidney_data.columns = kidney_data.columns.str.strip()
 
@@ -32,7 +32,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# ---------------- Train multiple KNN models with different k ----------------
+#  Train multiple KNN models with different k
 k_values = [1, 3, 5, 7, 9]
 accuracy_results = []
 
