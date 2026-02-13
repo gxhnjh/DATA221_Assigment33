@@ -27,9 +27,8 @@ print("Maximum:", max_crime_rate)
 #Written answers
 # Mean vs Median:
 # If the mean is greater than the median, the distribution is right-skewed, meaning a small number of high crime values pull the average upward.
-# If the mean and median are close, the distribution is roughly symmetric.
+#If the mean and median are close, the distribution is roughly symmetric.
 
 # Effect of extreme values:
-# The mean is more affected by extreme values because it includes every value
-# in its calculation. The median is more resistant to extreme values since it
-# depends only on the middle value after sorting.
+# The mean is more affected by extreme values because it includes every value in its calculation. The median is more resistant to extreme values since it
+#depends only on the middle value after sorting.

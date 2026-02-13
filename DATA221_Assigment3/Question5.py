@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 
-#Load and prepare data (same as Q4)
+#Load and prepare data, same  as question 4
 kidney_data = pd.read_csv("kidney_disease.csv")
 kidney_data.columns = kidney_data.columns.str.strip()
 
@@ -21,10 +21,10 @@ for col in categorical_columns:
     most_common_value = raw_features[col].mode(dropna=True)[0]
     raw_features[col] = raw_features[col].fillna(most_common_value)
 
-# One-hot encode categorical features so KNN can use them
+#Convert text categories into numeric values so the KNN model can work with them
 feature_matrix = pd.get_dummies(raw_features, drop_first=True)
 
-# Train/test split (same as Q3/Q4)
+# Train/test split
 X_train, X_test, y_train, y_test = train_test_split(
     feature_matrix,
     label_vector,
@@ -32,7 +32,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-#  Train multiple KNN models with different k
+#Train multiple KNN models with different k 1,3,4,7, and 9
 k_values = [1, 3, 5, 7, 9]
 accuracy_results = []
 
@@ -56,9 +56,7 @@ best_accuracy = float(best_row["accuracy"])
 
 print("\nBest k:", best_k)
 print("Highest test accuracy:", best_accuracy)
-
-# ---- Written explanations (3–5 sentences total) ----
 # Changing k changes how smooth vs sensitive the decision boundary is: small k reacts strongly to nearby points, larger k averages more neighbors.
-# Very small k (like 1) may overfit because the model can “memorize” noise and outliers in the training data.
+# Very small k (like 1) can overfit because the model can “memorize” noise and outliers in the training data.
 # Very large k may underfit because predictions become too averaged and the model may miss real patterns in the data.
 # We choose k based on test performance because we want the best generalization to unseen data, not just the training set.

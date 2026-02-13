@@ -18,14 +18,13 @@ label_vector = kidney_data[label_column]
 numeric_columns = raw_features.select_dtypes(include=["number"]).columns
 raw_features[numeric_columns] = raw_features[numeric_columns].fillna(raw_features[numeric_columns].median())
 
-# Fill non-numeric columns with mode (most common value)
+# Fill the non numeric columns with the mode
 categorical_columns = raw_features.select_dtypes(exclude=["number"]).columns
 for col in categorical_columns:
     most_common_value = raw_features[col].mode(dropna=True)[0]
     raw_features[col] = raw_features[col].fillna(most_common_value)
 
 #Convert categorical features to numeric
-# One-hot encode categorical columns
 feature_matrix = pd.get_dummies(raw_features, drop_first=True)
 
 #Train/test split
@@ -43,7 +42,7 @@ knn_model.fit(X_train, y_train)
 #Our prediction
 predicted_labels = knn_model.predict(X_test)
 
-#Confusion matrix + metrics
+#Confusion matrix and metrics
 conf_matrix = confusion_matrix(y_test, predicted_labels)
 
 accuracy = accuracy_score(y_test, predicted_labels)
@@ -62,7 +61,8 @@ print("F1-score:", f1)
 #Written explanations
 # True Positive: the model predicts "ckd" and the patient truly has kidney disease.
 # True Negative: the model predicts "notckd" and the patient truly does not have kidney disease.
-# False Positive: the model predicts "ckd" but the patient is actually healthy (unnecessary extra tests).
-# False Negative: the model predicts "notckd" but the patient actually has kidney disease (missed case).
+# False Positive: the model predicts "ckd" but the patient is actually healthy.
+# False Negative: the model predicts "notckd" but the patient actually has kidney disease.
 #Accuracy alone may not be enough because a model can look good if one class is more common than the other.
-# If missing a kidney disease case is very serious, recall is most important because it focuses on catching as many real "ckd" cases as possible (reducing false negatives).
+# If missing a kidney disease case is very serious, recall is most important because it measures how many sick patients the model correctly identifies.
+
